@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYNTHCORP // GUIDE</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="guide.css">
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+
+  <header class="hud-header">
+    <div class="logo">
+      <span class="logo-synth">SYNTH</span><span class="logo-corp">CORP</span>
+      <span class="logo-sub">// GUIDE DU NETRUNNER</span>
+    </div>
+    <div class="header-right">
+      <a class="btn-ladder" href="leaderboard.html">LADDER</a>
+      <a class="btn-save" href="index.html">◄ JOUER</a>
+    </div>
+  </header>
+
+  <div class="guide-layout">
+
+    <!-- NAV LATÉRALE -->
+    <nav class="guide-nav">
+      <div class="nav-title">// INDEX</div>
+      <a href="#concept"   class="nav-link">01 — Concept</a>
+      <a href="#resources" class="nav-link">02 — Ressources</a>
+      <a href="#buildings" class="nav-link">03 — Network Nodes</a>
+      <a href="#skills"    class="nav-link">04 — Skill Matrix</a>
+      <a href="#prestige"  class="nav-link">05 — Neural Reset</a>
+      <a href="#tips"      class="nav-link">06 — Stratégie</a>
+    </nav>
+
+    <!-- CONTENU -->
+    <main class="guide-content">
+
+      <!-- ══ 01 CONCEPT ══════════════════════════════ -->
+      <section id="concept" class="guide-section">
+        <div class="section-header">
+          <span class="section-num">01</span>
+          <h2 class="section-title">CONCEPT</h2>
+        </div>
+
+        <p class="guide-text">
+          <strong>SYNTHCORP</strong> est un <em>idle game</em> cyberpunk. Vous incarnez un netrunner
+          indépendant qui infiltre le réseau de la mégacorporation SYNTHCORP pour en détourner
+          les ressources à votre profit.
+        </p>
+        <p class="guide-text">
+          Le principe est simple : produire des <span class="hl-yellow">Crédits</span> en cliquant
+          ou en déployant des nœuds automatiques, puis réinvestir pour produire encore plus vite —
+          jusqu'au <span class="hl-magenta">Neural Reset</span>, qui efface tout mais vous rend
+          plus puissant que jamais.
+        </p>
+
+        <!-- DIAGRAMME BOUCLE DE JEU -->
+        <div class="diagram-wrap">
+          <div class="diagram-title">// BOUCLE DE JEU</div>
+          <svg class="loop-diagram" viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#00e5ff"/>
+              </marker>
+              <marker id="arr-m" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#ff00cc"/>
+              </marker>
+              <filter id="glow-c"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="glow-m"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <!-- Nodes -->
+            <g filter="url(#glow-c)">
+              <!-- CLICK -->
+              <polygon points="60,40 100,20 140,40 140,80 100,100 60,80" fill="#0a1a2a" stroke="#00e5ff" stroke-width="1.5"/>
+              <text x="100" y="55" text-anchor="middle" fill="#00e5ff" font-family="Courier New" font-size="11" font-weight="bold">JACK IN</text>
+              <text x="100" y="70" text-anchor="middle" fill="#ffcc00" font-family="Courier New" font-size="10">CLIC</text>
+
+              <!-- CREDITS -->
+              <rect x="210" y="25" width="100" height="50" rx="0" fill="#0a1000" stroke="#ffcc00" stroke-width="1.5"
+                    transform="skewX(-4)"/>
+              <text x="262" y="53" text-anchor="middle" fill="#ffcc00" font-family="Courier New" font-size="12" font-weight="bold">₢ CREDITS</text>
+
+              <!-- BUILDINGS -->
+              <rect x="370" y="10" width="110" height="50" rx="0" fill="#0a1a0a" stroke="#00ff88" stroke-width="1.5"
+                    transform="skewX(-4)"/>
+              <text x="427" y="33" text-anchor="middle" fill="#00ff88" font-family="Courier New" font-size="11" font-weight="bold">NETWORK</text>
+              <text x="427" y="50" text-anchor="middle" fill="#00ff88" font-family="Courier New" font-size="11" font-weight="bold">NODES</text>
+
+              <!-- SKILLS -->
+              <rect x="370" y="80" width="110" height="50" rx="0" fill="#0a000a" stroke="#ff00cc" stroke-width="1.5"
+                    transform="skewX(-4)"/>
+              <text x="427" y="103" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="11" font-weight="bold">SKILL</text>
+              <text x="427" y="120" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="11" font-weight="bold">MATRIX</text>
+
+              <!-- PRESTIGE -->
+              <polygon points="590,30 630,10 670,30 670,80 630,100 590,80" fill="#150520" stroke="#ff00cc" stroke-width="1.5"/>
+              <text x="630" y="55" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="10" font-weight="bold">NEURAL</text>
+              <text x="630" y="70" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="10" font-weight="bold">RESET</text>
+            </g>
+
+            <!-- Flèches -->
+            <!-- Click → Credits -->
+            <line x1="140" y1="60" x2="207" y2="52" stroke="#00e5ff" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- Credits → Buildings -->
+            <line x1="313" y1="42" x2="367" y2="35" stroke="#ffcc00" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- Buildings → Credits (loop) -->
+            <path d="M480,28 Q530,5 530,140 Q530,180 430,175 Q300,175 265,80" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+            <text x="530" y="155" text-anchor="middle" fill="#00ff88" font-family="Courier New" font-size="9">auto-prod</text>
+            <!-- Credits → Skills (data) -->
+            <line x1="313" y1="58" x2="367" y2="100" stroke="#00e5ff" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+            <text x="345" y="88" fill="#6677aa" font-family="Courier New" font-size="9">data</text>
+            <!-- Skills → Buildings (boost) -->
+            <line x1="480" y1="105" x2="480" y2="62" stroke="#ff00cc" stroke-width="1.2" marker-end="url(#arr)"/>
+            <!-- Buildings+Credits → Prestige -->
+            <line x1="483" y1="35" x2="587" y2="45" stroke="#ff00cc" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-m)"/>
+            <text x="535" y="30" fill="#ff00cc" font-family="Courier New" font-size="9">1M ₢</text>
+            <!-- Prestige → tout (retour en haut) -->
+            <path d="M630,10 Q630,-15 100,-15 Q60,-15 60,18" fill="none" stroke="#ff00cc" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr-m)"/>
+            <text x="350" y="-5" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="9">+50% permanent</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ══ 02 RESSOURCES ═══════════════════════════ -->
+      <section id="resources" class="guide-section">
+        <div class="section-header">
+          <span class="section-num">02</span>
+          <h2 class="section-title">RESSOURCES</h2>
+        </div>
+
+        <div class="resource-cards">
+
+          <!-- CREDITS -->
+          <div class="res-card">
+            <div class="res-illustration credits-illus">
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="gc"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <polygon points="60,8 95,27 110,63 95,99 60,112 25,99 10,63 25,27" fill="#0a0a00" stroke="#ffcc00" stroke-width="1.5" filter="url(#gc)"/>
+                <polygon points="60,22 88,37 98,63 88,89 60,98 32,89 22,63 32,37" fill="#111100" stroke="#ffcc0055" stroke-width="1"/>
+                <text x="60" y="72" text-anchor="middle" fill="#ffcc00" font-family="Courier New" font-size="36" font-weight="bold" filter="url(#gc)">₢</text>
+                <circle cx="60" cy="63" r="28" fill="none" stroke="#ffcc0033" stroke-width="8"/>
+                <line x1="60" y1="8" x2="60" y2="22" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="95" y1="27" x2="88" y2="37" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="110" y1="63" x2="98" y2="63" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="95" y1="99" x2="88" y2="89" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="60" y1="112" x2="60" y2="98" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="25" y1="99" x2="32" y2="89" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="10" y1="63" x2="22" y2="63" stroke="#ffcc0066" stroke-width="1"/>
+                <line x1="25" y1="27" x2="32" y2="37" stroke="#ffcc0066" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="res-info">
+              <div class="res-name" style="color:var(--yellow)">₢ CRÉDITS</div>
+              <div class="res-role">Ressource principale</div>
+              <p class="res-desc">
+                La monnaie du cyberespace. Tout s'achète en crédits : les Network Nodes,
+                les améliorations. Ils sont produits automatiquement par vos bâtiments
+                et accumulés en cliquant sur le nœud central.
+              </p>
+              <div class="res-sources">
+                <span class="source-tag">Clic manuel</span>
+                <span class="source-tag">Auto-click</span>
+                <span class="source-tag">Network Nodes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DATA -->
+          <div class="res-card">
+            <div class="res-illustration data-illus">
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="gd"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <!-- Circuit board pattern -->
+                <rect x="10" y="10" width="100" height="100" fill="#00080a" stroke="#00e5ff" stroke-width="1.5" filter="url(#gd)"/>
+                <!-- Grid lines -->
+                <line x1="10" y1="35" x2="110" y2="35" stroke="#00e5ff22" stroke-width="1"/>
+                <line x1="10" y1="60" x2="110" y2="60" stroke="#00e5ff22" stroke-width="1"/>
+                <line x1="10" y1="85" x2="110" y2="85" stroke="#00e5ff22" stroke-width="1"/>
+                <line x1="35" y1="10" x2="35" y2="110" stroke="#00e5ff22" stroke-width="1"/>
+                <line x1="60" y1="10" x2="60" y2="110" stroke="#00e5ff22" stroke-width="1"/>
+                <line x1="85" y1="10" x2="85" y2="110" stroke="#00e5ff22" stroke-width="1"/>
+                <!-- Circuit traces -->
+                <polyline points="20,60 35,60 35,35 60,35" fill="none" stroke="#00e5ff" stroke-width="1.5"/>
+                <polyline points="60,35 85,35 85,60 110,60" fill="none" stroke="#00e5ff" stroke-width="1.5"/>
+                <polyline points="35,85 60,85 60,60 85,60" fill="none" stroke="#00e5ff66" stroke-width="1.5"/>
+                <!-- Nodes on circuit -->
+                <circle cx="35" cy="60" r="4" fill="#00e5ff" filter="url(#gd)"/>
+                <circle cx="85" cy="60" r="4" fill="#00e5ff" filter="url(#gd)"/>
+                <circle cx="60" cy="35" r="4" fill="#00e5ff" filter="url(#gd)"/>
+                <circle cx="60" cy="85" r="3" fill="#00e5ff88"/>
+                <!-- Central diamond -->
+                <polygon points="60,48 72,60 60,72 48,60" fill="#00e5ff" filter="url(#gd)" opacity="0.9"/>
+                <polygon points="60,53 67,60 60,67 53,60" fill="#00080a"/>
+                <text x="60" y="64" text-anchor="middle" fill="#00e5ff" font-family="Courier New" font-size="10" font-weight="bold">◈</text>
+              </svg>
+            </div>
+            <div class="res-info">
+              <div class="res-name" style="color:var(--cyan)">◈ DATA</div>
+              <div class="res-role">Ressource de progression</div>
+              <p class="res-desc">
+                Flux de données brutes capturées sur le réseau. Utilisée exclusivement
+                pour débloquer et acquérir des compétences dans la <strong>Skill Matrix</strong>.
+                Elle s'accumule automatiquement dès que vous possédez des Data Shards ou supérieurs.
+              </p>
+              <div class="res-sources">
+                <span class="source-tag" style="border-color:var(--cyan);color:var(--cyan)">Data Shard</span>
+                <span class="source-tag" style="border-color:var(--cyan);color:var(--cyan)">Crypto Rig</span>
+                <span class="source-tag" style="border-color:var(--cyan);color:var(--cyan)">Neural Cluster +</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ENERGY -->
+          <div class="res-card">
+            <div class="res-illustration energy-illus">
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="ge"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  <linearGradient id="eg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#00ff88" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#00ff88" stop-opacity="0.2"/>
+                  </linearGradient>
+                </defs>
+                <!-- Outer ring -->
+                <circle cx="60" cy="60" r="50" fill="#000a05" stroke="#00ff88" stroke-width="1.5" filter="url(#ge)"/>
+                <circle cx="60" cy="60" r="42" fill="none" stroke="#00ff8833" stroke-width="8"/>
+                <!-- Progress arc (75%) -->
+                <circle cx="60" cy="60" r="42" fill="none" stroke="#00ff88" stroke-width="4"
+                        stroke-dasharray="197 66" stroke-dashoffset="33" stroke-linecap="round" filter="url(#ge)"/>
+                <!-- Inner circle -->
+                <circle cx="60" cy="60" r="28" fill="#00150a" stroke="#00ff8855" stroke-width="1"/>
+                <!-- Lightning bolt -->
+                <polygon points="67,20 50,65 63,65 53,100 80,52 65,52" fill="url(#eg)" filter="url(#ge)"/>
+                <!-- Tick marks -->
+                <line x1="60" y1="10" x2="60" y2="18" stroke="#00ff88" stroke-width="2"/>
+                <line x1="110" y1="60" x2="102" y2="60" stroke="#00ff88" stroke-width="2"/>
+                <line x1="10" y1="60" x2="18" y2="60" stroke="#00ff88" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="res-info">
+              <div class="res-name" style="color:var(--green)">⚡ ÉNERGIE</div>
+              <div class="res-role">Ressource de puissance</div>
+              <p class="res-desc">
+                L'électricité détournée des grilles corporatives alimente votre infrastructure.
+                L'énergie est produite par les Power Cells et nœuds avancés. Elle représente
+                votre emprise sur le réseau physique — un indicateur de votre progression.
+              </p>
+              <div class="res-sources">
+                <span class="source-tag" style="border-color:var(--green);color:var(--green)">Power Cell</span>
+                <span class="source-tag" style="border-color:var(--green);color:var(--green)">Crypto Rig +</span>
+                <span class="source-tag" style="border-color:var(--green);color:var(--green)">Skill TECH</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SYNAPTIC CORES -->
+          <div class="res-card">
+            <div class="res-illustration synapse-illus">
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <filter id="gm"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  <radialGradient id="mg" cx="50%" cy="50%">
+                    <stop offset="0%" stop-color="#ff00cc" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#ff00cc" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+                <!-- Aura -->
+                <circle cx="60" cy="60" r="52" fill="url(#mg)"/>
+                <!-- Outer geometric ring -->
+                <polygon points="60,5 108,32.5 108,87.5 60,115 12,87.5 12,32.5" fill="none" stroke="#ff00cc" stroke-width="1.5" filter="url(#gm)"/>
+                <polygon points="60,16 97,37 97,83 60,104 23,83 23,37" fill="#100010" stroke="#ff00cc55" stroke-width="1"/>
+                <!-- Inner star -->
+                <polygon points="60,28 67,52 92,52 72,67 79,91 60,76 41,91 48,67 28,52 53,52" fill="#ff00cc" filter="url(#gm)" opacity="0.85"/>
+                <polygon points="60,38 64,51 78,51 67,59 71,72 60,64 49,72 53,59 42,51 56,51" fill="#100010"/>
+                <!-- Central dot -->
+                <circle cx="60" cy="60" r="6" fill="#ff00cc" filter="url(#gm)"/>
+                <!-- Orbiting dots -->
+                <circle cx="60" cy="22" r="3" fill="#ff00cc88"/>
+                <circle cx="93" cy="80" r="3" fill="#ff00cc88"/>
+                <circle cx="27" cy="80" r="3" fill="#ff00cc88"/>
+              </svg>
+            </div>
+            <div class="res-info">
+              <div class="res-name" style="color:var(--magenta)">◉ SYNAPTIC CORES</div>
+              <div class="res-role">Ressource de prestige — PERMANENTE</div>
+              <p class="res-desc">
+                Des noyaux synaptiques gravés dans votre implant neural lors d'un
+                <strong>Neural Reset</strong>. Contrairement aux autres ressources,
+                ils ne disparaissent jamais — même après un prestige.
+                Chaque Core octroie <strong style="color:var(--magenta)">+50% de production</strong>
+                sur toutes les ressources, de façon permanente et cumulative.
+              </p>
+              <div class="res-sources">
+                <span class="source-tag" style="border-color:var(--magenta);color:var(--magenta)">Neural Reset uniquement</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══ 03 NETWORK NODES ════════════════════════ -->
+      <section id="buildings" class="guide-section">
+        <div class="section-header">
+          <span class="section-num">03</span>
+          <h2 class="section-title">NETWORK NODES</h2>
+        </div>
+
+        <p class="guide-text">
+          Les Network Nodes sont des unités de production automatique que vous achetez avec des
+          <span class="hl-yellow">Crédits</span>. Chaque exemplaire supplémentaire coûte
+          <strong>15% de plus</strong> que le précédent — achetez-en beaucoup tôt.
+        </p>
+
+        <div class="buildings-visual">
+          <!-- Tier timeline -->
+          <div class="tier-timeline">
+            <div class="tier-node t1">
+              <div class="tier-icon" style="color:#00e5ff">⬡</div>
+              <div class="tier-name">Ghost Node</div>
+              <div class="tier-cost">10 ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">+₢</div>
+            </div>
+            <div class="tier-arrow">▶</div>
+            <div class="tier-node t2">
+              <div class="tier-icon" style="color:#00ff88">◈</div>
+              <div class="tier-name">Data Shard</div>
+              <div class="tier-cost">100 ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">+₢ <span style="color:#00e5ff">+GB</span></div>
+            </div>
+            <div class="tier-arrow">▶</div>
+            <div class="tier-node t3">
+              <div class="tier-icon" style="color:#ffcc00">⚡</div>
+              <div class="tier-name">Power Cell</div>
+              <div class="tier-cost">500 ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">+₢ <span style="color:#00e5ff">+GB</span> <span style="color:#00ff88">+⚡</span></div>
+            </div>
+            <div class="tier-arrow">▶</div>
+            <div class="tier-node t4">
+              <div class="tier-icon" style="color:#ff6600">⬡</div>
+              <div class="tier-name">Crypto Rig</div>
+              <div class="tier-cost">3K ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">+₢₢ <span style="color:#00e5ff">+GB</span></div>
+            </div>
+            <div class="tier-arrow">▶</div>
+            <div class="tier-node t5">
+              <div class="tier-icon" style="color:#aa44ff">◉</div>
+              <div class="tier-name">Neural Cluster</div>
+              <div class="tier-cost">20K ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">+₢₢₢ <span style="color:#00e5ff">++GB</span></div>
+            </div>
+            <div class="tier-arrow">▶</div>
+            <div class="tier-node t6">
+              <div class="tier-icon" style="color:#ff00cc">▣</div>
+              <div class="tier-name">Corp Server</div>
+              <div class="tier-cost">150K ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">+₢₢₢₢ <span style="color:#00e5ff">+++GB</span></div>
+            </div>
+            <div class="tier-arrow">▶</div>
+            <div class="tier-node t7">
+              <div class="tier-icon" style="color:#ff0044">★</div>
+              <div class="tier-name">Quantum Nexus</div>
+              <div class="tier-cost">1.2M ₢</div>
+              <div class="tier-prod" style="color:#ffcc00">MAX</div>
+            </div>
+          </div>
+
+          <div class="building-tip">
+            <span class="tip-icon">◈</span>
+            Les nœuds se <strong>débloquent progressivement</strong> selon vos crédits totaux gagnés.
+            Le coût augmente de <strong>×1.15</strong> par achat — acheter en masse tôt est toujours rentable.
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 04 SKILL MATRIX ════════════════════════ -->
+      <section id="skills" class="guide-section">
+        <div class="section-header">
+          <span class="section-num">04</span>
+          <h2 class="section-title">SKILL MATRIX</h2>
+        </div>
+
+        <p class="guide-text">
+          La Skill Matrix est votre arbre de compétences. Chaque compétence se débloque
+          avec de la <span class="hl-cyan">Data</span> et amplifie votre production.
+          Les compétences sont organisées en <strong>4 branches</strong>, chacune dédiée à un aspect du jeu.
+          Elles doivent être débloquées <em>dans l'ordre</em> au sein d'une branche.
+        </p>
+
+        <!-- SKILL TREE VISUEL -->
+        <div class="skill-tree-visual">
+
+          <div class="branch-card" style="--bc: #00e5ff">
+            <div class="branch-header" style="color:#00e5ff; border-color:#00e5ff44">
+              <svg width="28" height="28" viewBox="0 0 28 28"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="#001a2a" stroke="#00e5ff" stroke-width="1.5"/><text x="14" y="19" text-anchor="middle" fill="#00e5ff" font-family="Courier New" font-size="13" font-weight="bold">H</text></svg>
+              HACKING
+            </div>
+            <div class="branch-desc">Amplifie la production de <span style="color:var(--yellow)">Crédits</span></div>
+            <div class="skill-chain">
+              <div class="skill-pill">⌥ Exploit 0day<br><small>+25% ₢ · 10 GB</small></div>
+              <div class="chain-arrow">▼</div>
+              <div class="skill-pill">⊛ Neural Tap<br><small>+50% ₢ · 60 GB</small></div>
+              <div class="chain-arrow">▼</div>
+              <div class="skill-pill">◈ Dark Net<br><small>×2 ₢ · 300 GB</small></div>
+              <div class="chain-arrow">▼</div>
+              <div class="skill-pill highlight-pill" style="border-color:#00e5ff88">⚔ Corp Breach<br><small>×4 ₢ · 1500 GB</small></div>
+            </div>
+          </div>
+
+          <div class="branch-card" style="--bc: #00ff88">
+            <div class="branch-header" style="color:#00ff88; border-color:#00ff8844">
+              <svg width="28" height="28" viewBox="0 0 28 28"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="#001a0a" stroke="#00ff88" stroke-width="1.5"/><text x="14" y="19" text-anchor="middle" fill="#00ff88" font-family="Courier New" font-size="13" font-weight="bold">T</text></svg>
+              TECH
+            </div>
+            <div class="branch-desc">Amplifie <span style="color:var(--cyan)">Data</span> et <span style="color:var(--green)">Énergie</span></div>
+            <div class="skill-chain">
+              <div class="skill-pill" style="border-color:#00ff8844">⚙ Overclock<br><small>+50% GB · 20 GB</small></div>
+              <div class="chain-arrow" style="color:#00ff88">▼</div>
+              <div class="skill-pill" style="border-color:#00ff8444">❄ Heat Sink<br><small>+50% ⚡ · 100 GB</small></div>
+              <div class="chain-arrow" style="color:#00ff88">▼</div>
+              <div class="skill-pill" style="border-color:#00ff8444">∞ Quantum Loop<br><small>×2 GB+⚡ · 600 GB</small></div>
+              <div class="chain-arrow" style="color:#00ff88">▼</div>
+              <div class="skill-pill highlight-pill" style="border-color:#00ff8888">◉ Singularity<br><small>×2 TOUT · 3000 GB</small></div>
+            </div>
+          </div>
+
+          <div class="branch-card" style="--bc: #ff00cc">
+            <div class="branch-header" style="color:#ff00cc; border-color:#ff00cc44">
+              <svg width="28" height="28" viewBox="0 0 28 28"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="#1a0015" stroke="#ff00cc" stroke-width="1.5"/><text x="14" y="19" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="13" font-weight="bold">A</text></svg>
+              AUGMENT
+            </div>
+            <div class="branch-desc">Amplifie les <span style="color:var(--yellow)">clics</span> et toute la production</div>
+            <div class="skill-chain">
+              <div class="skill-pill" style="border-color:#ff00cc44">✦ Chrome Hands<br><small>×3 clic · 30 GB</small></div>
+              <div class="chain-arrow" style="color:#ff00cc">▼</div>
+              <div class="skill-pill" style="border-color:#ff00cc44">⚡ Reflex Boost<br><small>+50% tout · 200 GB</small></div>
+              <div class="chain-arrow" style="color:#ff00cc">▼</div>
+              <div class="skill-pill" style="border-color:#ff00cc44">⬡ Bio-Matrix<br><small>×2 tout · 1000 GB</small></div>
+              <div class="chain-arrow" style="color:#ff00cc">▼</div>
+              <div class="skill-pill highlight-pill" style="border-color:#ff00cc88">★ Transcendence<br><small>×5 tout · 5000 GB</small></div>
+            </div>
+          </div>
+
+          <div class="branch-card" style="--bc: #ff6600">
+            <div class="branch-header" style="color:#ff6600; border-color:#ff660044">
+              <svg width="28" height="28" viewBox="0 0 28 28"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="#1a0a00" stroke="#ff6600" stroke-width="1.5"/><text x="14" y="19" text-anchor="middle" fill="#ff6600" font-family="Courier New" font-size="11" font-weight="bold">AU</text></svg>
+              AUTOMATION
+            </div>
+            <div class="branch-desc">Active et améliore l'<span style="color:var(--orange)">auto-click</span></div>
+            <div class="skill-chain">
+              <div class="skill-pill" style="border-color:#ff660044">⟳ Auto-Script<br><small>0.5 click/s · 50 GB</small></div>
+              <div class="chain-arrow" style="color:#ff6600">▼</div>
+              <div class="skill-pill" style="border-color:#ff660044">⤿ Ghost Routine<br><small>+2 click/s · 300 GB</small></div>
+              <div class="chain-arrow" style="color:#ff6600">▼</div>
+              <div class="skill-pill" style="border-color:#ff660044">⟲ Daemon Core<br><small>+8 click/s · 1500 GB</small></div>
+              <div class="chain-arrow" style="color:#ff6600">▼</div>
+              <div class="skill-pill highlight-pill" style="border-color:#ff660088">◎ Neural Reflex<br><small>+30 click/s · 6000 GB</small></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="building-tip">
+          <span class="tip-icon">⚙</span>
+          Les multiplicateurs des branches s'<strong>additionnent</strong> entre eux.
+          Débloquer Singularity (×2 tout) + Transcendence (×5 tout) donne ×7 à toute la production.
+          Les auto-clicks sont également boostés par les skills AUGMENT (Chrome Hands, etc.).
+        </div>
+      </section>
+
+      <!-- ══ 05 NEURAL RESET ════════════════════════ -->
+      <section id="prestige" class="guide-section">
+        <div class="section-header">
+          <span class="section-num">05</span>
+          <h2 class="section-title">NEURAL RESET</h2>
+        </div>
+
+        <p class="guide-text">
+          Le <span class="hl-magenta">Neural Reset</span> est le mécanisme de prestige du jeu.
+          Il devient disponible dès que vous avez produit <strong>1 000 000 ₢</strong> au total.
+        </p>
+
+        <!-- PRESTIGE CYCLE SVG -->
+        <div class="diagram-wrap">
+          <div class="diagram-title">// CYCLE DE PRESTIGE</div>
+          <svg class="prestige-diagram" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="gp"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <marker id="arrp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#ff00cc"/>
+              </marker>
+            </defs>
+
+            <!-- Phase 1 : Production -->
+            <rect x="20" y="80" width="130" height="80" fill="#0a0a00" stroke="#ffcc00" stroke-width="1.5" filter="url(#gp)"/>
+            <text x="85" y="108" text-anchor="middle" fill="#ffcc00" font-family="Courier New" font-size="12" font-weight="bold">PRODUCTION</text>
+            <text x="85" y="126" text-anchor="middle" fill="#6677aa" font-family="Courier New" font-size="10">Accumulez</text>
+            <text x="85" y="142" text-anchor="middle" fill="#ffcc00" font-family="Courier New" font-size="11">1 000 000 ₢</text>
+
+            <!-- Flèche → Reset -->
+            <line x1="150" y1="120" x2="210" y2="120" stroke="#ff00cc" stroke-width="2" marker-end="url(#arrp)"/>
+            <text x="180" y="112" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="9">RESET</text>
+
+            <!-- Phase 2 : Calcul gain -->
+            <rect x="215" y="60" width="170" height="120" fill="#150520" stroke="#ff00cc" stroke-width="2" filter="url(#gp)"/>
+            <text x="300" y="90" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="12" font-weight="bold">NEURAL RESET</text>
+            <line x1="230" y1="98" x2="370" y2="98" stroke="#ff00cc33" stroke-width="1"/>
+            <text x="300" y="116" text-anchor="middle" fill="#6677aa" font-family="Courier New" font-size="10">Gain =</text>
+            <text x="300" y="132" text-anchor="middle" fill="#e0e8ff" font-family="Courier New" font-size="11">√(totalCredits / 1M)</text>
+            <text x="300" y="152" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="10">Cores gagnés</text>
+            <text x="300" y="168" text-anchor="middle" fill="#6677aa" font-family="Courier New" font-size="9">ex: 4M ₢ → 2 Cores</text>
+
+            <!-- Flèche → Nouveau départ -->
+            <line x1="388" y1="120" x2="448" y2="120" stroke="#ff00cc" stroke-width="2" marker-end="url(#arrp)"/>
+
+            <!-- Phase 3 : Nouveau départ -->
+            <rect x="453" y="80" width="130" height="80" fill="#050005" stroke="#ff00cc" stroke-width="1.5" filter="url(#gp)"/>
+            <text x="518" y="106" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="11" font-weight="bold">NOUVEAU</text>
+            <text x="518" y="122" text-anchor="middle" fill="#ff00cc" font-family="Courier New" font-size="11" font-weight="bold">DÉPART</text>
+            <text x="518" y="142" text-anchor="middle" fill="#6677aa" font-family="Courier New" font-size="10">+50%/Core</text>
+            <text x="518" y="156" text-anchor="middle" fill="#6677aa" font-family="Courier New" font-size="10">permanent</text>
+
+            <!-- Ce qui est PERDU -->
+            <rect x="215" y="200" width="170" height="32" fill="#1a0000" stroke="#ff000055" stroke-width="1"/>
+            <text x="300" y="220" text-anchor="middle" fill="#ff4444" font-family="Courier New" font-size="10">✗ Crédits · Data · Énergie · Bâtiments · Skills</text>
+            <line x1="300" y1="180" x2="300" y2="200" stroke="#ff000055" stroke-width="1" stroke-dasharray="3,2"/>
+
+            <!-- Ce qui est GARDÉ -->
+            <rect x="453" y="170" width="130" height="32" fill="#001500" stroke="#00ff8855" stroke-width="1"/>
+            <text x="518" y="186" text-anchor="middle" fill="#00ff88" font-family="Courier New" font-size="9">✓ Synaptic Cores</text>
+            <text x="518" y="198" text-anchor="middle" fill="#00ff88" font-family="Courier New" font-size="9">✓ Historique total</text>
+            <line x1="518" y1="160" x2="518" y2="170" stroke="#00ff8855" stroke-width="1" stroke-dasharray="3,2"/>
+          </svg>
+        </div>
+
+        <div class="prestige-formula">
+          <div class="formula-title">Calcul du gain de Cores</div>
+          <div class="formula-body">
+            <span class="formula-part magenta">Cores gagnés</span>
+            <span class="formula-eq"> = </span>
+            <span class="formula-part">⌊ √( </span>
+            <span class="formula-part yellow">crédits totaux</span>
+            <span class="formula-part"> / 1 000 000 ) ⌋</span>
+          </div>
+          <div class="formula-examples">
+            <span>1M ₢ → 1 Core</span>
+            <span>4M ₢ → 2 Cores</span>
+            <span>9M ₢ → 3 Cores</span>
+            <span>25M ₢ → 5 Cores</span>
+            <span>100M ₢ → 10 Cores</span>
+          </div>
+        </div>
+
+        <div class="building-tip" style="border-color:var(--magenta)44; background:#100518">
+          <span class="tip-icon" style="color:var(--magenta)">◉</span>
+          Attendez d'avoir <strong>au moins 4M ₢</strong> avant votre premier prestige pour gagner
+          2 Cores d'un coup (+100% production). Plus vous attendez, plus le gain est rentable —
+          mais la progression ralentit naturellement, ce qui signale le bon moment.
+        </div>
+      </section>
+
+      <!-- ══ 06 STRATÉGIE ══════════════════════════ -->
+      <section id="tips" class="guide-section">
+        <div class="section-header">
+          <span class="section-num">06</span>
+          <h2 class="section-title">STRATÉGIE</h2>
+        </div>
+
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-num">01</div>
+            <div class="tip-content">
+              <div class="tip-title">Cliquez au début</div>
+              <p>Sans bâtiments, le clic est votre seule source de revenus. Spammez le nœud central
+              pour acheter vos premiers <strong>Ghost Nodes</strong> rapidement.</p>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">02</div>
+            <div class="tip-content">
+              <div class="tip-title">Data Shards en priorité</div>
+              <p>Les Data Shards génèrent de la <span class="hl-cyan">Data</span>. Sans Data, vous
+              ne pouvez pas débloquer de skills. Achetez-en dès que possible pour débloquer
+              <strong>Auto-Script</strong> (50 GB).</p>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">03</div>
+            <div class="tip-content">
+              <div class="tip-title">Auto-click = liberté</div>
+              <p>La branche <span class="hl-orange">AUTOMATION</span> permet de jouer sans cliquer.
+              Débloquez-la dès 50 GB. Le clic manuel reste utile pour des boosts ponctuels car
+              il profite aussi des skills AUGMENT.</p>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">04</div>
+            <div class="tip-content">
+              <div class="tip-title">Skills en cascade</div>
+              <p>Les multiplicateurs s'additionnent. Priorité : <strong>Chrome Hands</strong> (×3 clic)
+              → <strong>Auto-Script</strong> (auto) → <strong>Overclock</strong> (+Data)
+              → rest of AUGMENT pour booster toute la production.</p>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">05</div>
+            <div class="tip-content">
+              <div class="tip-title">Quand prestiger ?</div>
+              <p>Attendez au minimum <strong>4M ₢</strong> pour votre premier Neural Reset (2 Cores).
+              Chaque prestige suivant sera plus rapide grâce au bonus permanent.
+              Visez toujours un carré parfait : 4M, 9M, 16M, 25M...</p>
+            </div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">06</div>
+            <div class="tip-content">
+              <div class="tip-title">Progression offline</div>
+              <p>Le jeu continue de tourner quand vous fermez l'onglet — à
+              <strong>50% du taux normal</strong>, pendant 4 heures max.
+              Revenez régulièrement pour réinvestir et débloquer les nœuds suivants.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Smooth scroll + active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const sections = document.querySelectorAll('.guide-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>

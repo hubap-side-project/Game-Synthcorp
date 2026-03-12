@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYNTHCORP // LADDER</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="leaderboard.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+
+  <!-- HEADER -->
+  <header class="hud-header">
+    <div class="logo">
+      <span class="logo-synth">SYNTH</span><span class="logo-corp">CORP</span>
+      <span class="logo-sub">// NEURAL LADDER</span>
+    </div>
+    <div class="header-right">
+      <span class="header-player-name" id="lb-player-name"></span>
+      <a class="btn-save" href="index.html">◄ RETOUR</a>
+    </div>
+  </header>
+
+  <!-- PLAYER CARD + STATUS -->
+  <div class="lb-topbar">
+    <div class="lb-mycard" id="lb-mycard">
+      <div class="lb-mycard-rank" id="lb-my-rank">—</div>
+      <div class="lb-mycard-info">
+        <div class="lb-mycard-name" id="lb-my-name">—</div>
+        <div class="lb-mycard-score" id="lb-my-score">0 ₢</div>
+      </div>
+      <div class="lb-mycard-prestige" id="lb-my-prestige"></div>
+    </div>
+    <div class="lb-status-wrap">
+      <div class="lb-status" id="lb-status">
+        <span class="lb-status-dot" id="lb-status-dot"></span>
+        <span id="lb-status-text">Connexion...</span>
+      </div>
+      <div class="lb-total" id="lb-total"></div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD TABLE -->
+  <div class="lb-container">
+    <div class="lb-section-title">// TOP CLASSEMENT</div>
+    <table class="lb-table">
+      <thead>
+        <tr>
+          <th class="col-rank">RANG</th>
+          <th class="col-name">IDENTIFIANT</th>
+          <th class="col-score">CRÉDITS</th>
+          <th class="col-prestige">PRESTIGE</th>
+          <th class="col-time">VU</th>
+        </tr>
+      </thead>
+      <tbody id="lb-tbody">
+        <tr><td colspan="5" class="lb-loading">Chargement du réseau...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="leaderboard.js"></script>
+</body>
+</html>

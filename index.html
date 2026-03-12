@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYNTHCORP // Cyberpunk Idle</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+
+  <!-- HEADER -->
+  <header class="hud-header">
+    <div class="logo">
+      <span class="logo-synth">SYNTH</span><span class="logo-corp">CORP</span>
+      <span class="logo-sub">// NEURAL NETWORK IDLE v1.0</span>
+    </div>
+    <div class="header-right">
+      <span class="header-player-name" id="header-player-name"></span>
+      <a class="btn-guide" href="guide.html">GUIDE</a>
+      <a class="btn-ladder" href="leaderboard.html">LADDER</a>
+      <button class="btn-save" id="btn-save">SAVE</button>
+      <button class="btn-reset-hard" id="btn-hard-reset">WIPE</button>
+    </div>
+  </header>
+
+  <!-- RESOURCES BAR -->
+  <div class="resources-bar">
+    <div class="resource-chip" id="res-credits">
+      <div class="resource-icon credits-icon">₢</div>
+      <div class="resource-info">
+        <span class="resource-label">CREDITS</span>
+        <span class="resource-value" id="credits-val">0</span>
+        <span class="resource-rate" id="credits-rate">+0/s</span>
+      </div>
+    </div>
+    <div class="resource-chip" id="res-data">
+      <div class="resource-icon data-icon">◈</div>
+      <div class="resource-info">
+        <span class="resource-label">DATA</span>
+        <span class="resource-value" id="data-val">0</span>
+        <span class="resource-rate" id="data-rate">+0/s</span>
+      </div>
+    </div>
+    <div class="resource-chip" id="res-energy">
+      <div class="resource-icon energy-icon">⚡</div>
+      <div class="resource-info">
+        <span class="resource-label">ENERGY</span>
+        <span class="resource-value" id="energy-val">0</span>
+        <span class="resource-rate" id="energy-rate">+0/s</span>
+      </div>
+    </div>
+    <div class="resource-chip prestige-chip">
+      <div class="resource-icon synapse-icon">◉</div>
+      <div class="resource-info">
+        <span class="resource-label">SYNAPTIC CORES</span>
+        <span class="resource-value" id="synapse-val">0</span>
+        <span class="resource-rate">PERMANENT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+
+    <!-- LEFT: BUILDINGS -->
+    <section class="panel panel-buildings">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="panel-icon">▣</span> NETWORK NODES
+        </div>
+        <div class="panel-subtitle">Deploy automated production units</div>
+      </div>
+      <div class="buildings-list" id="buildings-list">
+        <!-- Injected by JS -->
+      </div>
+    </section>
+
+    <!-- CENTER: CLICK + INFO -->
+    <section class="panel panel-center">
+      <div class="click-area" id="click-area">
+        <div class="click-hex">
+          <div class="hex-inner">
+            <div class="hex-icon">⬡</div>
+            <div class="hex-label">JACK IN</div>
+            <div class="hex-rate" id="click-reward">+1 ₢</div>
+          </div>
+        </div>
+        <div class="click-particles" id="click-particles"></div>
+      </div>
+
+      <div class="stats-panel">
+        <div class="stat-row">
+          <span class="stat-label">TOTAL PRODUCED</span>
+          <span class="stat-value" id="total-credits">0 ₢</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">PRODUCTION/s</span>
+          <span class="stat-value" id="total-cps">0 ₢/s</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">PRESTIGE BONUS</span>
+          <span class="stat-value" id="prestige-bonus">x1.0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">AUTO-CLICK/s</span>
+          <span class="stat-value" id="auto-click-rate" style="color:#334466">INACTIF</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">PLAYTIME</span>
+          <span class="stat-value" id="playtime">00:00:00</span>
+        </div>
+      </div>
+
+      <!-- PRESTIGE -->
+      <div class="prestige-zone" id="prestige-zone">
+        <div class="prestige-title">// NEURAL RESET //</div>
+        <div class="prestige-desc">
+          Sacrifiez tout pour gagner des <strong>Synaptic Cores</strong>.<br>
+          Chaque Core = <strong>+50% production</strong> permanent.
+        </div>
+        <div class="prestige-preview">
+          Vous gagnerez : <span id="prestige-gain" class="highlight">0</span> Cores
+        </div>
+        <button class="btn-prestige" id="btn-prestige" disabled>
+          NEURAL RESET — NEEDS 1M ₢
+        </button>
+      </div>
+    </section>
+
+    <!-- RIGHT: SKILL TREE -->
+    <section class="panel panel-skills">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="panel-icon">◈</span> SKILL MATRIX
+        </div>
+        <div class="panel-subtitle">Spend Data to unlock neural upgrades</div>
+      </div>
+      <div class="skill-branches" id="skill-branches">
+        <!-- Injected by JS -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- NAME MODAL -->
+  <div class="name-modal-overlay" id="name-modal">
+    <div class="name-modal">
+      <div class="name-modal-logo"><span class="logo-synth">SYNTH</span><span class="logo-corp">CORP</span></div>
+      <div class="name-modal-title">// IDENTIFY YOURSELF //</div>
+      <div class="name-modal-sub">Votre identifiant sera visible sur le classement mondial</div>
+      <input type="text" id="name-input" class="name-input" maxlength="20"
+             placeholder="NETRUNNER_XXX" autocomplete="off" spellcheck="false">
+      <div class="name-modal-error" id="name-modal-error"></div>
+      <button class="btn-name-confirm" id="btn-name-confirm">CONNECTER AU RÉSEAU</button>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- MILESTONE LOG -->
+  <div class="milestone-log" id="milestone-log">
+    <div class="log-header">// SYS LOG</div>
+    <div class="log-entries" id="log-entries"></div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
