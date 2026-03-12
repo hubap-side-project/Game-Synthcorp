@@ -352,12 +352,17 @@ function updateUI() {
   document.getElementById('prestige-bonus').textContent = 'x' + (1 + state.synapticCores * 0.5).toFixed(1);
   document.getElementById('playtime').textContent       = fmtTime(state.playTime);
 
-  // Tournament banner
+  // Tournament banner + auto-reset when countdown reaches 0
   const banner = document.getElementById('tournament-banner');
   if (banner) {
     if (nextTournamentAt > 0) {
+      const remaining = nextTournamentAt - Date.now();
       banner.style.display = 'block';
-      document.getElementById('tournament-countdown').textContent = fmtCountdown(nextTournamentAt - Date.now());
+      document.getElementById('tournament-countdown').textContent = fmtCountdown(remaining);
+      if (remaining <= 0) {
+        const localTs = parseInt(localStorage.getItem(TOURNAMENT_KEY) || '0', 10);
+        if (nextTournamentAt > localTs) applyTournamentReset(nextTournamentAt);
+      }
     } else {
       banner.style.display = 'none';
     }
