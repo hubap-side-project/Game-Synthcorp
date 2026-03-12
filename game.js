@@ -9,50 +9,50 @@ const BUILDINGS_DEF = [
   {
     id: 'ghost_node', name: 'Ghost Node', tier: 1,
     desc: 'Rogue process hijacking idle CPU cycles.',
-    baseCost: 10, costMult: 1.15,
-    baseProduction: { credits: 0.1, data: 0, energy: 0 },
+    baseCost: 30, costMult: 1.18,
+    baseProduction: { credits: 0.03, data: 0, energy: 0 },
     unlockAt: 0, tierColor: '#00e5ff',
   },
   {
     id: 'data_shard', name: 'Data Shard', tier: 2,
     desc: 'Fractured data crystals streaming raw packets.',
-    baseCost: 100, costMult: 1.15,
-    baseProduction: { credits: 0.5, data: 0.05, energy: 0 },
+    baseCost: 300, costMult: 1.18,
+    baseProduction: { credits: 0.17, data: 0.017, energy: 0 },
     unlockAt: 5, tierColor: '#00ff88',
   },
   {
     id: 'power_cell', name: 'Power Cell', tier: 3,
     desc: 'Stolen corp grid taps powering your network.',
-    baseCost: 500, costMult: 1.15,
-    baseProduction: { credits: 2, data: 0.1, energy: 0.2 },
+    baseCost: 1500, costMult: 1.18,
+    baseProduction: { credits: 0.67, data: 0.033, energy: 0.067 },
     unlockAt: 10, tierColor: '#ffcc00',
   },
   {
     id: 'crypto_rig', name: 'Crypto Rig', tier: 4,
     desc: 'Quantum ASIC arrays mining dark-chain tokens.',
-    baseCost: 3000, costMult: 1.15,
-    baseProduction: { credits: 10, data: 0.5, energy: 0.5 },
+    baseCost: 9000, costMult: 1.18,
+    baseProduction: { credits: 3.33, data: 0.17, energy: 0.17 },
     unlockAt: 25, tierColor: '#ff6600',
   },
   {
     id: 'neural_cluster', name: 'Neural Cluster', tier: 5,
     desc: 'Wetware-silicon hybrid processing mesh.',
-    baseCost: 20000, costMult: 1.15,
-    baseProduction: { credits: 60, data: 3, energy: 2 },
+    baseCost: 60000, costMult: 1.18,
+    baseProduction: { credits: 20, data: 1, energy: 0.67 },
     unlockAt: 50, tierColor: '#aa44ff',
   },
   {
     id: 'corp_server', name: 'Corp Server', tier: 6,
     desc: 'Megacorp mainframe node under your control.',
-    baseCost: 150000, costMult: 1.15,
-    baseProduction: { credits: 400, data: 20, energy: 12 },
+    baseCost: 450000, costMult: 1.18,
+    baseProduction: { credits: 133, data: 6.67, energy: 4 },
     unlockAt: 100, tierColor: '#ff00cc',
   },
   {
     id: 'quantum_nexus', name: 'Quantum Nexus', tier: 7,
     desc: 'Entangled quantum cores bending spacetime logic.',
-    baseCost: 1200000, costMult: 1.15,
-    baseProduction: { credits: 3000, data: 150, energy: 80 },
+    baseCost: 3600000, costMult: 1.18,
+    baseProduction: { credits: 1000, data: 50, energy: 26.67 },
     unlockAt: 250, tierColor: '#ff0044',
   },
 ];
@@ -145,6 +145,9 @@ const SKILLS_DEF = [
   },
 ];
 
+const SURGE_DURATION = 60; // seconds
+function surgeCost(tier) { return (tier + 1) * 50; }
+
 const BRANCH_META = [
   { name: 'HACKING',    color: '#00e5ff', skills: ['exploit_0day','neural_tap','dark_net','corp_breach'] },
   { name: 'TECH',       color: '#00ff88', skills: ['overclock','heat_sink','quantum_loop','singularity'] },
@@ -163,6 +166,7 @@ let state = {
   prestigeCount: 0,
   buildings: {},
   unlockedSkills: new Set(),
+  activeBoosts: {}, // skillId → expiry timestamp (ms)
   playTime: 0,
   lastTick: Date.now(),
   milestones: new Set(),
@@ -193,15 +197,17 @@ function isSkillUnlocked(id){ return state.unlockedSkills.has(id); }
 // ── MULTIPLIERS ───────────────────────────────
 function getMultipliers() {
   let creditsM = 1, dataM = 1, energyM = 1, allM = 1, clickM = 1;
+  const nowMs = Date.now();
   for (const id of state.unlockedSkills) {
     const s = SKILLS_DEF.find(s => s.id === id);
     if (!s) continue;
     const e = s.effect;
-    if (e.creditsMulti) creditsM += e.creditsMulti;
-    if (e.dataMulti)    dataM    += e.dataMulti;
-    if (e.energyMulti)  energyM  += e.energyMulti;
-    if (e.allMulti)     allM     += e.allMulti;
-    if (e.clickMulti)   clickM   += e.clickMulti;
+    const bm = (state.activeBoosts[id] && state.activeBoosts[id] > nowMs) ? 2 : 1;
+    if (e.creditsMulti) creditsM += e.creditsMulti * bm;
+    if (e.dataMulti)    dataM    += e.dataMulti    * bm;
+    if (e.energyMulti)  energyM  += e.energyMulti  * bm;
+    if (e.allMulti)     allM     += e.allMulti      * bm;
+    if (e.clickMulti)   clickM   += e.clickMulti   * bm;
   }
   const prestigeBonus = 1 + state.synapticCores * 0.5;
   return {
@@ -243,13 +249,13 @@ function getAutoClickRate() {
 
 // ── PRESTIGE ──────────────────────────────────
 function getPrestigeGain() {
-  const n = Math.floor(Math.sqrt(state.totalCredits / 1e6));
+  const n = Math.floor(Math.sqrt(state.totalCredits / 1e7));
   return Math.max(0, n);
 }
 
 function doPrestige() {
   const gain = getPrestigeGain();
-  if (gain <= 0 || state.totalCredits < 1e6) return;
+  if (gain <= 0 || state.totalCredits < 1e7) return;
 
   state.credits = 0;
   state.data = 0;
@@ -308,7 +314,7 @@ const MILESTONE_LIST = [
   { id: 'm_1k',    check: s => s.totalCredits >= 1000,   msg: '1 000 ₢ — Le réseau s\'éveille' },
   { id: 'm_10k',   check: s => s.totalCredits >= 10000,  msg: '10 000 ₢ — Netrunner confirmé' },
   { id: 'm_100k',  check: s => s.totalCredits >= 100000, msg: '100 000 ₢ — Fantôme du cyberespace' },
-  { id: 'm_1m',    check: s => s.totalCredits >= 1000000,msg: '1M ₢ — NEURAL RESET disponible !' },
+  { id: 'm_1m',    check: s => s.totalCredits >= 10000000,msg: '10M ₢ — NEURAL RESET disponible !' },
   { id: 'm_10m',   check: s => s.grandTotalCredits >= 10000000, msg: '10M ₢ — Légende de la Zone' },
   { id: 'm_s10',   check: s => s.synapticCores >= 10,    msg: '10 Synaptic Cores — Entité augmentée' },
 ];
@@ -372,11 +378,11 @@ function updateUI() {
   const gain = getPrestigeGain();
   document.getElementById('prestige-gain').textContent = gain;
   const btnP = document.getElementById('btn-prestige');
-  const canPrestige = state.totalCredits >= 1e6;
+  const canPrestige = state.totalCredits >= 1e7;
   btnP.disabled = !canPrestige;
   btnP.textContent = canPrestige
     ? `NEURAL RESET — GAGNER ${gain} CORES`
-    : `NEURAL RESET — ${fmt(1e6 - state.totalCredits)} ₢ RESTANT`;
+    : `NEURAL RESET — ${fmt(1e7 - state.totalCredits)} ₢ RESTANT`;
 
   // Building affordability
   for (const def of BUILDINGS_DEF) {
@@ -420,6 +426,28 @@ function updateUI() {
       } else {
         statusEl.textContent = canAfford ? 'ACHETER' : fmt(skill.costData) + ' GB';
         statusEl.style.color = canAfford ? '#00e5ff' : '#664444';
+      }
+    }
+
+    // Surge button
+    const surgeBtn = document.getElementById('surge-' + skill.id);
+    if (surgeBtn) {
+      surgeBtn.style.display = unlocked ? 'block' : 'none';
+      if (unlocked) {
+        const expiresAt = state.activeBoosts[skill.id];
+        const isActive = expiresAt && expiresAt > Date.now();
+        if (isActive) {
+          const remaining = Math.ceil((expiresAt - Date.now()) / 1000);
+          surgeBtn.textContent = `⚡ SURGE ACTIF ${remaining}s`;
+          surgeBtn.disabled = true;
+          surgeBtn.style.opacity = '0.7';
+        } else {
+          const cost = surgeCost(skill.tier);
+          const canSurge = state.energy >= cost;
+          surgeBtn.textContent = `⚡ SURGE (${cost}⚡)`;
+          surgeBtn.disabled = !canSurge;
+          surgeBtn.style.opacity = canSurge ? '1' : '0.4';
+        }
       }
     }
   }
@@ -500,9 +528,14 @@ function renderSkills() {
           <div class="node-cost">${skill.costData} GB</div>
           <div class="node-status">🔒</div>
         </div>
+        <button class="surge-btn" id="surge-${skill.id}" style="display:none">⚡ SURGE (${surgeCost(skill.tier)}⚡)</button>
       `;
 
       node.addEventListener('click', () => buySkill(skill));
+      node.querySelector('.surge-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        surgeSkill(skill);
+      });
       nodesDiv.appendChild(node);
     }
 
@@ -522,6 +555,17 @@ function buyBuilding(def) {
   if ([1, 5, 10, 25, 50, 100, 200].includes(cnt)) {
     logMilestone(`${def.name} x${cnt} déployé`, 'highlight-log');
   }
+}
+
+function surgeSkill(skill) {
+  if (!isSkillUnlocked(skill.id)) return;
+  if (state.activeBoosts[skill.id] && state.activeBoosts[skill.id] > Date.now()) return;
+  const cost = surgeCost(skill.tier);
+  if (state.energy < cost) return;
+  state.energy -= cost;
+  state.activeBoosts[skill.id] = Date.now() + SURGE_DURATION * 1000;
+  toast('⚡ SURGE: ' + skill.name.toUpperCase() + ' — 60s x2');
+  logMilestone(`⚡ SURGE activé : ${skill.name} (60s x2)`, '');
 }
 
 function buySkill(skill) {

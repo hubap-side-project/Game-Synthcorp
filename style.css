@@ -361,6 +361,18 @@ html, body {
 .node-cost  { font-size: 12px; color: var(--cyan); text-align: right; white-space: nowrap; }
 .node-status{ font-size: 12px; font-weight: bold; text-align: right; }
 
+.skill-node { flex-wrap: wrap; }
+.surge-btn {
+  width: 100%; margin-top: 6px;
+  background: transparent; border: 1px solid #ffcc00;
+  color: #ffcc00; font-family: 'Courier New', monospace;
+  font-size: 11px; padding: 4px 8px; cursor: pointer;
+  clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  transition: background 0.15s, opacity 0.15s;
+}
+.surge-btn:hover:not(:disabled) { background: #ffcc0022; }
+.surge-btn:disabled { cursor: default; }
+
 /* TOAST */
 .toast {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(30px);
