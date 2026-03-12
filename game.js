@@ -729,6 +729,35 @@ function hardReset() {
   location.reload();
 }
 
+// ── TOURNAMENT RESET ──────────────────────────
+const TOURNAMENT_KEY = 'synthcorp_tournament';
+
+function checkTournamentReset() {
+  if (!window.synthDB) return;
+  window.synthDB.ref('synthcorp_config/tournamentStartedAt').once('value', snapshot => {
+    const serverTs = snapshot.val();
+    if (!serverTs) return;
+    const localTs = parseInt(localStorage.getItem(TOURNAMENT_KEY) || '0', 10);
+    if (serverTs > localTs) applyTournamentReset(serverTs);
+  });
+}
+
+function applyTournamentReset(ts) {
+  localStorage.setItem(TOURNAMENT_KEY, ts.toString());
+  localStorage.removeItem(SAVE_KEY);
+  state.credits = 0; state.data = 0; state.energy = 0;
+  state.totalCredits = 0; state.grandTotalCredits = 0;
+  state.synapticCores = 0; state.prestigeCount = 0;
+  state.buildings = {}; state.unlockedSkills = new Set();
+  state.playTime = 0; state.milestones = new Set();
+  state.activeBoosts = {}; state.lastTick = Date.now();
+  renderBuildings();
+  renderSkills();
+  updateUI();
+  logMilestone('⚔ TOURNOI DÉMARRÉ — Progression réinitialisée', 'prestige-log');
+  toast('⚔ TOURNOI — RESET EFFECTUÉ');
+}
+
 // ── OFFLINE PROGRESS ──────────────────────────
 function applyOfflineProgress() {
   const raw = localStorage.getItem(SAVE_KEY);
@@ -810,6 +839,9 @@ function init() {
 
   initPlayer();
   logMilestone('Système SYNTHCORP initialisé', '');
+
+  // Check tournament reset after a short delay to let Firebase initialize
+  setTimeout(checkTournamentReset, 1500);
 }
 
 document.addEventListener('DOMContentLoaded', init);
