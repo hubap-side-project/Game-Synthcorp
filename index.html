@@ -168,6 +168,40 @@
     </div>
   </div>
 
+  <!-- ADMIN PANEL -->
+  <div class="admin-overlay" id="admin-overlay" style="display:none">
+    <div class="admin-modal">
+      <div class="admin-title">// ADMIN — TOURNAMENT CONTROL //</div>
+
+      <div id="admin-auth" class="admin-section">
+        <div class="admin-label">MOT DE PASSE</div>
+        <input type="password" id="admin-password" class="admin-input" placeholder="••••••••" autocomplete="off">
+        <div class="admin-error" id="admin-error"></div>
+        <button class="admin-btn" id="admin-login-btn">CONNEXION</button>
+      </div>
+
+      <div id="admin-controls" class="admin-section" style="display:none">
+        <div class="admin-row">
+          <div class="admin-label">PROCHAIN RESET</div>
+          <input type="datetime-local" id="admin-next-date" class="admin-input">
+          <button class="admin-btn" id="admin-set-next-btn">DÉFINIR</button>
+          <button class="admin-btn admin-btn-danger" id="admin-clear-next-btn">EFFACER</button>
+        </div>
+
+        <div class="admin-divider"></div>
+
+        <div class="admin-row">
+          <div class="admin-label">DÉCLENCHER RESET MAINTENANT</div>
+          <button class="admin-btn admin-btn-danger" id="admin-reset-now-btn">⚔ RESET TOURNOI</button>
+        </div>
+
+        <div class="admin-status" id="admin-status"></div>
+      </div>
+
+      <button class="admin-close" id="admin-close-btn">✕ FERMER</button>
+    </div>
+  </div>
+
   <!-- NOTIFICATION TOAST -->
   <div class="toast" id="toast"></div>
 

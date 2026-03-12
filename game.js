@@ -869,3 +869,89 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// ── ADMIN PANEL ────────────────────────────────
+const ADMIN_PASSWORD = 'SYNTHCORP_ADMIN';
+let adminUnlocked = false;
+let adminLogoClicks = 0;
+
+function openAdminPanel() {
+  adminUnlocked = false;
+  adminLogoClicks = 0;
+  document.getElementById('admin-auth').style.display    = 'flex';
+  document.getElementById('admin-controls').style.display = 'none';
+  document.getElementById('admin-password').value = '';
+  document.getElementById('admin-error').textContent = '';
+  document.getElementById('admin-status').textContent = '';
+  document.getElementById('admin-overlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('admin-password').focus(), 100);
+
+  // Pre-fill next date field with current nextTournamentAt if set
+  if (nextTournamentAt > 0) {
+    const d = new Date(nextTournamentAt);
+    // datetime-local format: YYYY-MM-DDTHH:MM
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('admin-next-date').value =
+      `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+}
+
+function initAdmin() {
+  // Secret: click logo 5 times
+  document.querySelector('.logo').addEventListener('click', () => {
+    adminLogoClicks++;
+    if (adminLogoClicks >= 5) openAdminPanel();
+  });
+
+  document.getElementById('admin-close-btn').addEventListener('click', () => {
+    document.getElementById('admin-overlay').style.display = 'none';
+  });
+
+  document.getElementById('admin-login-btn').addEventListener('click', () => {
+    const pw = document.getElementById('admin-password').value;
+    if (pw !== ADMIN_PASSWORD) {
+      document.getElementById('admin-error').textContent = 'Mot de passe incorrect';
+      return;
+    }
+    adminUnlocked = true;
+    document.getElementById('admin-auth').style.display     = 'none';
+    document.getElementById('admin-controls').style.display = 'flex';
+  });
+
+  document.getElementById('admin-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('admin-login-btn').click();
+  });
+
+  document.getElementById('admin-set-next-btn').addEventListener('click', () => {
+    if (!adminUnlocked || !window.synthDB) return;
+    const val = document.getElementById('admin-next-date').value;
+    if (!val) { document.getElementById('admin-status').textContent = 'Date invalide'; return; }
+    const ts = new Date(val).getTime();
+    window.synthDB.ref('synthcorp_config/nextTournamentAt').set(ts, err => {
+      if (err) { document.getElementById('admin-status').textContent = 'Erreur Firebase'; return; }
+      nextTournamentAt = ts;
+      document.getElementById('admin-status').textContent = 'Prochain reset défini ✓';
+    });
+  });
+
+  document.getElementById('admin-clear-next-btn').addEventListener('click', () => {
+    if (!adminUnlocked || !window.synthDB) return;
+    window.synthDB.ref('synthcorp_config/nextTournamentAt').remove(() => {
+      nextTournamentAt = 0;
+      document.getElementById('admin-status').textContent = 'Bandeau retiré ✓';
+    });
+  });
+
+  document.getElementById('admin-reset-now-btn').addEventListener('click', () => {
+    if (!adminUnlocked || !window.synthDB) return;
+    if (!confirm('Reset TOUTES les parties de tous les joueurs ?')) return;
+    const now = Date.now();
+    window.synthDB.ref('synthcorp_config/tournamentStartedAt').set(now, err => {
+      if (err) { document.getElementById('admin-status').textContent = 'Erreur Firebase'; return; }
+      document.getElementById('admin-status').textContent = 'Reset déclenché ✓ — Joueurs réinitialisés au prochain chargement';
+      applyTournamentReset(now);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initAdmin);

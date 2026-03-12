@@ -382,6 +382,47 @@ html, body {
 .surge-btn:hover:not(:disabled) { background: #ffcc0022; }
 .surge-btn:disabled { cursor: default; }
 
+/* ADMIN PANEL */
+.admin-overlay {
+  position: fixed; inset: 0; background: #000000cc;
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.admin-modal {
+  background: #08081a; border: 1px solid #ff6600;
+  padding: 28px 32px; min-width: 380px; max-width: 480px; width: 90%;
+  box-shadow: 0 0 40px #ff660044;
+}
+.admin-title {
+  color: #ff6600; font-size: 14px; letter-spacing: 3px;
+  text-align: center; margin-bottom: 24px; text-shadow: 0 0 8px #ff660088;
+}
+.admin-section { display: flex; flex-direction: column; gap: 10px; }
+.admin-row { display: flex; flex-direction: column; gap: 8px; }
+.admin-label { font-size: 11px; color: var(--text-secondary); letter-spacing: 2px; }
+.admin-input {
+  background: #0a0a1e; border: 1px solid var(--border); color: var(--text-primary);
+  font-family: 'Courier New', monospace; font-size: 13px; padding: 8px 12px; width: 100%;
+  box-sizing: border-box;
+}
+.admin-input:focus { outline: none; border-color: #ff6600; }
+.admin-error { font-size: 11px; color: var(--magenta); min-height: 16px; }
+.admin-btn {
+  background: transparent; border: 1px solid #ff6600; color: #ff6600;
+  font-family: 'Courier New', monospace; font-size: 12px; padding: 8px 16px;
+  cursor: pointer; letter-spacing: 1px; transition: background 0.15s;
+}
+.admin-btn:hover { background: #ff660022; }
+.admin-btn-danger { border-color: var(--magenta); color: var(--magenta); }
+.admin-btn-danger:hover { background: #ff00cc22; }
+.admin-divider { border-top: 1px solid var(--border); margin: 8px 0; }
+.admin-status { font-size: 12px; color: var(--green); min-height: 18px; text-align: center; }
+.admin-close {
+  display: block; margin: 20px auto 0; background: transparent;
+  border: 1px solid var(--border); color: var(--text-secondary);
+  font-family: 'Courier New', monospace; font-size: 12px; padding: 6px 20px; cursor: pointer;
+}
+.admin-close:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
 /* TOAST */
 .toast {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(30px);
