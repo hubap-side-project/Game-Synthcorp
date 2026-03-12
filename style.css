@@ -113,6 +113,15 @@ html, body {
 .btn-reset-hard:hover { background: var(--magenta); color: #000; }
 
 /* RESOURCES BAR */
+.tournament-banner {
+  text-align: center; padding: 6px 16px;
+  background: #1a0a00; border-bottom: 1px solid #ff6600;
+  color: #ff6600; font-size: 13px; letter-spacing: 2px;
+  text-shadow: 0 0 8px #ff660088;
+}
+.tournament-banner-icon { margin-right: 8px; }
+.tournament-countdown { color: #ffcc00; font-weight: bold; margin-left: 8px; text-shadow: 0 0 8px #ffcc0088; }
+
 .resources-bar {
   display: flex; gap: 3px; padding: 8px 10px;
   background: #08081a;

@@ -352,6 +352,17 @@ function updateUI() {
   document.getElementById('prestige-bonus').textContent = 'x' + (1 + state.synapticCores * 0.5).toFixed(1);
   document.getElementById('playtime').textContent       = fmtTime(state.playTime);
 
+  // Tournament banner
+  const banner = document.getElementById('tournament-banner');
+  if (banner) {
+    if (nextTournamentAt > 0) {
+      banner.style.display = 'block';
+      document.getElementById('tournament-countdown').textContent = fmtCountdown(nextTournamentAt - Date.now());
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
   // Click reward
   document.getElementById('click-reward').textContent = '+' + fmt(getClickValue()) + ' ₢';
 
@@ -731,15 +742,28 @@ function hardReset() {
 
 // ── TOURNAMENT RESET ──────────────────────────
 const TOURNAMENT_KEY = 'synthcorp_tournament';
+let nextTournamentAt = 0; // timestamp ms of next reset
 
 function checkTournamentReset() {
   if (!window.synthDB) return;
-  window.synthDB.ref('synthcorp_config/tournamentStartedAt').once('value', snapshot => {
-    const serverTs = snapshot.val();
-    if (!serverTs) return;
+  window.synthDB.ref('synthcorp_config').once('value', snapshot => {
+    const cfg = snapshot.val() || {};
+    if (cfg.nextTournamentAt) nextTournamentAt = cfg.nextTournamentAt;
+    if (!cfg.tournamentStartedAt) return;
     const localTs = parseInt(localStorage.getItem(TOURNAMENT_KEY) || '0', 10);
-    if (serverTs > localTs) applyTournamentReset(serverTs);
+    if (cfg.tournamentStartedAt > localTs) applyTournamentReset(cfg.tournamentStartedAt);
   });
+}
+
+function fmtCountdown(ms) {
+  if (ms <= 0) return 'IMMINENT';
+  const s = Math.floor(ms / 1000);
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (d > 0) return `${d}j ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m`;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
 }
 
 function applyTournamentReset(ts) {
