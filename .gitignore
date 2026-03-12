@@ -1,6 +1,3 @@
-# Firebase config (contains API keys)
-firebase-config.js
-
 # OS
 .DS_Store
 Thumbs.db
