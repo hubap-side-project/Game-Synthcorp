@@ -737,6 +737,25 @@ function init() {
     syncScore();
   }, 30000);
 
+  // Rattraper le temps écoulé quand l'onglet redevient actif (fix throttle navigateur)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      const now = Date.now();
+      const elapsed = (now - state.lastTick) / 1000;
+      if (elapsed > 1) {
+        const prod = getTotalProduction();
+        const earned = prod.cps * elapsed;
+        state.credits           += earned;
+        state.totalCredits      += earned;
+        state.grandTotalCredits += earned;
+        state.data   += prod.dps * elapsed;
+        state.energy += prod.eps * elapsed;
+        state.lastTick = now;
+        updateUI();
+      }
+    }
+  });
+
   // Event listeners
   document.getElementById('click-area').addEventListener('click', handleClick);
   document.getElementById('btn-prestige').addEventListener('click', doPrestige);
